@@ -5,6 +5,14 @@ const baseHost = "https://wedev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
 export function onAddPostClick(description, imageUrl, token) {
+  if (!imageUrl) {
+    alert("Не выбрана фотография");
+    return;
+  }
+  if (!description) {
+    alert("Введите описание");
+    return;
+  }
  return fetch(postsHost, {
     method: "POST",
     body: JSON.stringify({
@@ -13,7 +21,11 @@ export function onAddPostClick(description, imageUrl, token) {
       headers: {
         authorization: token,
        },
-  }).then((response) => {return response.json()})
+  }).then((response) => {
+    return response.json()
+  }).catch((error) => {
+    alert(error.message); 
+  })
 }
 
 export function likeOnn({token, postId}) {
@@ -22,8 +34,15 @@ export function likeOnn({token, postId}) {
     headers: {
       Authorization: token,
     },
-  }).then((response) => {return response.json()})
-    
+  }).then((response) => {
+    if (response.status === 401) {
+      throw new Error("Нет авторизации");
+    }
+
+    return response.json();
+  }).catch((error) => {
+    alert(error.message);
+  })
 }
 
 export function likeOff({token, postId}) {
@@ -32,7 +51,15 @@ export function likeOff({token, postId}) {
     headers: {
       Authorization: token,
     },
-  }).then((response) => {return response.json()})
+  }).then((response) => {
+    if (response.status === 401) {
+      throw new Error("Нет авторизации");
+    }
+
+    return response.json();
+  }).catch((error) => {
+    alert(error.message);
+  })
     
 }
 

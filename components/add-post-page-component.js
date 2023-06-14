@@ -69,7 +69,7 @@ export function renderAddPostPageComponent({ appEl, token}) {
     });
 
     document.getElementById("add-button").addEventListener("click", () => {
-      onAddPostClick(document.getElementById("description").value, imageUrl, token).then((data) => {
+      onAddPostClick(document.getElementById("description").value.replaceAll("<", "&lt;").replaceAll(">", "&gt;"), imageUrl, token).then((data) => {
         goToPage(POSTS_PAGE);
       });
     });
