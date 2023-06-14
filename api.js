@@ -16,6 +16,26 @@ export function onAddPostClick(description, imageUrl, token) {
   }).then((response) => {return response.json()})
 }
 
+export function likeOnn({token, postId}) {
+  return fetch(postsHost + `/` + postId +`/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {return response.json()})
+    
+}
+
+export function likeOff({token, postId}) {
+  return fetch(postsHost + `/` + postId +`/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {return response.json()})
+    
+}
+
 export function getPostsUser(token, userId) {
   return fetch(postsHost + `/user-posts/` + userId, {
     method: "GET",
@@ -49,7 +69,7 @@ export function getPostsUser(token, userId) {
     });
 }
 
-export function getPosts({ token }) {
+export function getPosts( token ) {
   return fetch(postsHost, {
     method: "GET",
     headers: {

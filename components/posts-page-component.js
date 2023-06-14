@@ -1,12 +1,10 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { USER_POSTS_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage} from "../index.js";
-import { getPosts } from "../api.js";
-import { getUserFromLocalStorage} from "../helpers.js";
+import { getPosts, likeOnn,likeOff } from "../api.js";
 
-export function renderPostsPageComponent({ appEl }) {
-  let user = getUserFromLocalStorage();
-  getPosts(`Bearer ${user.token}`).then((data) => {
+export function renderPostsPageComponent({ appEl, token }) {
+  getPosts(token).then((data) => {
       let postsHtml = data.map((post) => {
         return `<li class="post">
                 <div class="post-header" data-user-id="${post.userId}">
@@ -17,7 +15,7 @@ export function renderPostsPageComponent({ appEl }) {
                   <img class="post-image" src="${post.imageUrl}">
                 </div>
                 <div class="post-likes">
-                  <button data-post-id="642d00579b190443860c2f32" class="like-button">
+                  <button data-post-id="${post.id}" class="like-button">
                     <img src="./assets/images/like-active.svg">
                   </button>
                   <p class="post-likes-text">
@@ -42,7 +40,7 @@ export function renderPostsPageComponent({ appEl }) {
                 + postsHtml +
                 `</ul>
               </div>`
-    
+    console.log(data);
      appEl.innerHTML = appHtml;
 
      renderHeaderComponent({
@@ -56,6 +54,18 @@ export function renderPostsPageComponent({ appEl }) {
          });
        });
      }
+     
+     for (let button of document.querySelectorAll(".like-button")) {
+      button.addEventListener("click", () => {
+        let index = data.findIndex(post => post.id === button.dataset.postId);
+        if (data[index].isLiked) {
+          likeOff({token, postId: button.dataset.postId}).then(goToPage(POSTS_PAGE))
+        } else {
+          likeOnn({token, postId: button.dataset.postId}).then(goToPage(POSTS_PAGE))
+        }
+      });
+    }
+    
 
   });
 }

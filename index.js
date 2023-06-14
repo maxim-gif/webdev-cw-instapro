@@ -20,7 +20,7 @@ import {
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
-
+console.log(user);
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
@@ -55,7 +55,7 @@ export const goToPage = (newPage, data) => {
       page = LOADING_PAGE;
       renderApp();
 
-      return getPosts({ token: getToken() })
+      return getPosts(null)
         .then((newPosts) => {
           page = POSTS_PAGE;
           posts = newPosts;
@@ -68,10 +68,7 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      // TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
       page = USER_POSTS_PAGE;
-      posts = [];
       return renderApp(data.userId);
     }
 
@@ -117,13 +114,13 @@ const renderApp = (userId) => {
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
       appEl,
+      token: getToken(),
     });
   }
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
     appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    console.log(userId);
     renderUserPostPageComponent({appEl, userId, token: getToken()});
     return;
   }

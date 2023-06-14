@@ -1,5 +1,7 @@
-import { getPostsUser} from "../api.js";
+import { getPostsUser, likeOff, likeOnn} from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
+import { goToPage} from "../index.js";
+import { USER_POSTS_PAGE} from "../routes.js";
 
 export function renderUserPostPageComponent({appEl, userId, token }) {
     getPostsUser(token, userId).then((data) => {
@@ -13,7 +15,7 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                       <img class="post-image" src="${post.imageUrl}">
                     </div>
                     <div class="post-likes">
-                      <button data-post-id="642d00579b190443860c2f32" class="like-button">
+                      <button data-post-id="${post.id}" class="like-button">
                         <img src="./assets/images/like-active.svg">
                       </button>
                       <p class="post-likes-text">
@@ -44,6 +46,19 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                   renderHeaderComponent({
                     element: document.querySelector(".header-container"),
                   });
+
+                  for (let button of document.querySelectorAll(".like-button")) {
+                    button.addEventListener("click", () => {
+                      let index = data.findIndex(post => post.id === button.dataset.postId);
+                      console.log(data[index].isLiked);
+                      if (data[index].isLiked) {
+                        likeOff({token, postId: button.dataset.postId}).then(goToPage(USER_POSTS_PAGE, { userId: data[index].userId, }))
+                      } else {
+                        likeOnn({token, postId: button.dataset.postId}).then(goToPage(USER_POSTS_PAGE, { userId: data[index].userId, }))
+                      }
+                    });
+                  }
+                  
     });
     
 }
