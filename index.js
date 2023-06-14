@@ -1,5 +1,6 @@
 import { getPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
+import { renderUserPostPageComponent} from "./components/user_posts_page_component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
   ADD_POSTS_PAGE,
@@ -71,7 +72,7 @@ export const goToPage = (newPage, data) => {
       console.log("Открываю страницу пользователя: ", data.userId);
       page = USER_POSTS_PAGE;
       posts = [];
-      return renderApp();
+      return renderApp(data.userId);
     }
 
     page = newPage;
@@ -83,7 +84,7 @@ export const goToPage = (newPage, data) => {
   throw new Error("страницы не существует");
 };
 
-const renderApp = () => {
+const renderApp = (userId) => {
   const appEl = document.getElementById("app");
   if (page === LOADING_PAGE) {
     return renderLoadingPageComponent({
@@ -122,6 +123,8 @@ const renderApp = () => {
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
     appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    console.log(userId);
+    renderUserPostPageComponent({appEl, userId, token: getToken()});
     return;
   }
 };

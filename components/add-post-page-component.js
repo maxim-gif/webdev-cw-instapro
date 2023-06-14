@@ -4,7 +4,7 @@ import { goToPage } from "../index.js";
 import {POSTS_PAGE} from "../routes.js";
 
 
-export function renderAddPostPageComponent({ appEl, token, page}) {
+export function renderAddPostPageComponent({ appEl, token}) {
   const render = () => {
     let imageUrl = localStorage.getItem('url');
     // TODO: Реализовать страницу добавления поста

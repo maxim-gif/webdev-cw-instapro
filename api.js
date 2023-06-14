@@ -16,6 +16,39 @@ export function onAddPostClick(description, imageUrl, token) {
   }).then((response) => {return response.json()})
 }
 
+export function getPostsUser(token, userId) {
+  return fetch(postsHost + `/user-posts/` + userId, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      const arrPosts = data.posts.map((post) => {
+        return {
+          id: post.id,
+          imageUrl:  post.imageUrl,
+          createdAt:  post.createdAt,
+          description:  post.description,
+          userId: post.user.id,
+          userName: post.user.name,
+          userLogin: post.user.login,
+          userImageUrl: post.user.imageUrl,
+          likes: post.likes,
+          isLiked: post.isLiked,
+        };
+      });
+      return arrPosts
+    });
+}
+
 export function getPosts({ token }) {
   return fetch(postsHost, {
     method: "GET",

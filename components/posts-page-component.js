@@ -9,7 +9,7 @@ export function renderPostsPageComponent({ appEl }) {
   getPosts(`Bearer ${user.token}`).then((data) => {
       let postsHtml = data.map((post) => {
         return `<li class="post">
-                <div class="post-header" data-user-id="${post.id}">
+                <div class="post-header" data-user-id="${post.userId}">
                     <img src="${post.userImageUrl}" class="post-header__user-image">
                     <p class="post-header__user-name">${post.userName}</p>
                 </div>
@@ -34,7 +34,7 @@ export function renderPostsPageComponent({ appEl }) {
               </li>`
       }).join("");
 
-      console.log(data);
+  
         const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
