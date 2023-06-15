@@ -119,10 +119,8 @@ const renderApp = (userId) => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    renderUserPostPageComponent({appEl, userId, token: getToken()});
-    return;
+    return renderUserPostPageComponent({appEl, userId, token: getToken()});
+    
   }
 };
 
