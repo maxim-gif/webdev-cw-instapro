@@ -40,8 +40,7 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                   <p class="post-date">
                   ${formatDistanceToNow(new Date(post.createdAt), { locale: ru })} назад
                   </p>
-                </li>
-                div class="btn-up btn-up_hide"></div>`
+                </li>`
         }).join("");
   
         console.log(data);
@@ -51,7 +50,8 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                   <ul class="posts">` 
                   + postsHtml +
                   `</ul>
-                </div>`
+                </div>
+                <div class="btn-up btn-up_hide"></div>`
 
                 appEl.innerHTML = appHtml;
 

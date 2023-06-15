@@ -52,8 +52,7 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === POSTS_PAGE) {
-      page = LOADING_PAGE;
-      renderApp();
+  
 
       return getPosts(null)
         .then((newPosts) => {
