@@ -1,14 +1,13 @@
-import { getPostsUser, likeOff, likeOnn} from "../api.js";
+import { getPostsUser, likeOff, likeOnn, deletePost} from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { goToPage} from "../index.js";
-import { USER_POSTS_PAGE} from "../routes.js";
 import { formatDistanceToNow } from "date-fns"
 import { ru } from 'date-fns/locale'
-import _, { functions } from 'lodash';
+import _ from 'lodash';
 
 export function renderUserPostPageComponent({appEl, userId, token }) {
   function render () {
     getPostsUser(token, userId).then((data) => {
+      console.log(token);
       let postsHtml = data.map((post) => {
           return `<li class="post">
                   <div class="post-header" data-user-id="${post.id}">
@@ -19,12 +18,19 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                     <img class="post-image" src="${post.imageUrl}">
                   </div>
                   <div class="post-likes">
-                    <button data-post-id="${post.id}" class="like-button">
-                      <img src="./assets/images/like-active.svg">
-                    </button>
-                    <p class="post-likes-text">
-                      Нравится: <strong>${post.likes.map((like) => {return _.capitalize(like.name)}).join(", ")}</strong>
-                    </p>
+                  <div class="likes-contain">
+                  <button data-post-id="${post.id}" class="like-button">
+                    <img src="./assets/images/like-active.svg">
+                  </button>
+                  <p class="post-likes-text">
+                    Нравится: <strong>${post.likes.length === 0 ?"":_.capitalize(post.likes[0].name)} ${post.likes.length > 1 ? `и еще ${post.likes.length - 1}`: ""}</strong>
+                  </p>
+                 </div>
+                <div>
+                  <button data-post-id="${post.id}" style="${token === undefined ? "display: none;":""} " class="delete-button">
+                    <img class="delete-svg" src="./assets/images/delete.svg">
+                  </button>
+                </div>
                   </div>
                   <p class="post-text">
                     <span class="user-name">${ _.capitalize(post.userName)}</span>
@@ -56,18 +62,18 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                     let index = data.findIndex(post => post.id === button.dataset.postId);
                     console.log(data[index].isLiked);
                     if (data[index].isLiked) {
-                      likeOff({token, postId: button.dataset.postId}).then(() => {
-                          render()
-                  })
+                      likeOff({token, postId: button.dataset.postId}).then(() => {render()})
                     } else {
-                      likeOnn({token, postId: button.dataset.postId}).then(() => {
-                          goToPage(USER_POSTS_PAGE, { userId: data[index].userId, })
-                         render()
-                  })
+                      likeOnn({token, postId: button.dataset.postId}).then(() => {render()})
                     }
                   });
                 }
                 
+                for (let button of document.querySelectorAll(".delete-button")) {
+                  button.addEventListener("click", () => {
+                    deletePost({token, postId: button.dataset.postId}).then(() => {render()})
+                  });
+                }
   });
   }
    

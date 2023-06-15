@@ -1,7 +1,7 @@
 import { USER_POSTS_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage} from "../index.js";
-import { getPosts, likeOnn,likeOff } from "../api.js";
+import { getPosts, likeOnn,likeOff, deletePost } from "../api.js";
 import { formatDistanceToNow } from "date-fns"
 import { ru } from 'date-fns/locale'
 import _ from 'lodash';
@@ -19,12 +19,19 @@ export function renderPostsPageComponent({ appEl, token }) {
                   <img class="post-image" src="${post.imageUrl}">
                 </div>
                 <div class="post-likes">
-                  <button data-post-id="${post.id}" class="like-button">
-                    <img src="./assets/images/like-active.svg">
-                  </button>
-                  <p class="post-likes-text">
-                    Нравится: <strong>${post.likes.map((like) => {return  _.capitalize(like.name)}).join(", ")}</strong>
-                  </p>
+                    <div class="likes-contain">
+                     <button data-post-id="${post.id}" class="like-button">
+                       <img src="./assets/images/like-active.svg">
+                     </button>
+                     <p class="post-likes-text">
+                       Нравится: <strong>${post.likes.length === 0 ?"":_.capitalize(post.likes[0].name)} ${post.likes.length > 1 ? `и еще ${post.likes.length - 1}`: ""}</strong>
+                     </p>
+                    </div>
+                   <div>
+                     <button data-post-id="${post.id}" style="${token === undefined ? "display: none;":""} " class="delete-button">
+                       <img class="delete-svg" src="./assets/images/delete.svg">
+                     </button>
+                   </div>
                 </div>
                 <p class="post-text">
                   <span class="user-name">${ _.capitalize(post.userName)}</span>
@@ -36,7 +43,7 @@ export function renderPostsPageComponent({ appEl, token }) {
               </li>`
       }).join("");
 
-  
+  console.log(data);
         const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
@@ -67,6 +74,12 @@ export function renderPostsPageComponent({ appEl, token }) {
         } else {
           likeOnn({token, postId: button.dataset.postId}).then(goToPage(POSTS_PAGE))
         }
+      });
+    }
+
+    for (let button of document.querySelectorAll(".delete-button")) {
+      button.addEventListener("click", () => {
+        deletePost({token, postId: button.dataset.postId}).then(goToPage(POSTS_PAGE))
       });
     }
     

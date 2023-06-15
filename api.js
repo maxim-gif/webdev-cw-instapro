@@ -1,6 +1,6 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+const personalKey = "maxim";
 const baseHost = "https://wedev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
@@ -25,6 +25,17 @@ export function onAddPostClick(description, imageUrl, token) {
     return response.json()
   }).catch((error) => {
     alert(error.message); 
+  })
+}
+
+export function deletePost ({token, postId}) {
+  return fetch(postsHost + `/` + postId, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    return response.json()
   })
 }
 
