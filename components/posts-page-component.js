@@ -1,6 +1,7 @@
 import { USER_POSTS_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage} from "../index.js";
+import { scrollUp } from "../helpers.js";
 import { getPosts, likeOnn,likeOff, deletePost } from "../api.js";
 import { formatDistanceToNow } from "date-fns"
 import { ru } from 'date-fns/locale'
@@ -50,7 +51,8 @@ export function renderPostsPageComponent({ appEl, token }) {
                 <ul class="posts">` 
                 + postsHtml +
                 `</ul>
-              </div>`
+              </div>
+              <div class="btn-up btn-up_hide"></div>`
     console.log(data);
      appEl.innerHTML = appHtml;
 
@@ -83,6 +85,7 @@ export function renderPostsPageComponent({ appEl, token }) {
       });
     }
     
+    scrollUp({btnUp : document.querySelector('.btn-up')})
 
   });
 }

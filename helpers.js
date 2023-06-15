@@ -13,3 +13,18 @@ export function getUserFromLocalStorage(user) {
 export function removeUserFromLocalStorage(user) {
   window.localStorage.removeItem("user");
 }
+
+export function scrollUp({btnUp}) {
+  window.addEventListener("scroll", () => {
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    scrollY > 400 ? btnUp.classList.remove('btn-up_hide') : btnUp.classList.add('btn-up_hide')
+  })
+
+  btnUp.onclick = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+}

@@ -1,6 +1,7 @@
 import { getPostsUser, likeOff, likeOnn, deletePost} from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { formatDistanceToNow } from "date-fns"
+import { scrollUp } from "../helpers.js";
 import { ru } from 'date-fns/locale'
 import _ from 'lodash';
 
@@ -39,7 +40,8 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                   <p class="post-date">
                   ${formatDistanceToNow(new Date(post.createdAt), { locale: ru })} назад
                   </p>
-                </li>`
+                </li>
+                div class="btn-up btn-up_hide"></div>`
         }).join("");
   
         console.log(data);
@@ -74,7 +76,9 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                     deletePost({token, postId: button.dataset.postId}).then(() => {render()})
                   });
                 }
-  });
+
+                scrollUp({btnUp : document.querySelector('.btn-up')})
+      });
   }
    
     render()
