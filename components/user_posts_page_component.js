@@ -21,7 +21,7 @@ export function renderUserPostPageComponent({appEl, userId, token }) {
                   <div class="post-likes">
                   <div class="likes-contain">
                   <button data-post-id="${post.id}" class="like-button">
-                    <img src="./assets/images/like-active.svg">
+                    <img src="./assets/images/${post.isLiked ? "like-active":"like-not-active"}.svg">
                   </button>
                   <p class="post-likes-text">
                     Нравится: <strong>${post.likes.length === 0 ?"":_.capitalize(post.likes[0].name)} ${post.likes.length > 1 ? `и еще ${post.likes.length - 1}`: ""}</strong>
