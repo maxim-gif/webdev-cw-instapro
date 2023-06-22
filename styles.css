@@ -82,15 +82,60 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 }
 
-.like-button {
+.like-button,
+.delete-button {
   border: none;
   background-color: transparent;
   padding: 8px;
   padding-left: 0px;
   padding-bottom: 5px;
   cursor: pointer;
+}
+
+.likes-contain {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.delete-svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-up {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 50px;
+  position: fixed;
+  background-color: #48b1ee;
+  right: 60px;
+  bottom: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-up::before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  background: transparent no-repeat center center;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23fff' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z'/%3E%3C/svg%3E");
+}
+
+.btn-up:hover {
+  background-color: #512da8;
+}
+
+.btn-up_hide {
+  display: none;
 }
 
 .user-name {
@@ -195,4 +240,25 @@
   box-sizing: border-box;
   width: 100%;
   text-align: center;
+}
+
+.description {
+  outline: none;
+  resize: none;
+  border: none;
+  background-color: #dfdcdc;
+  border-radius: 5px;
+  width: 100%;
+  height: 100px;
+}
+
+@media (max-width: 425px) {
+  .post-image-container{
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 300px;
+  }
+  .logo {
+    font-size: 16px;
+  }
 }
